@@ -23,3 +23,6 @@ RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
 
 # Expose the port the app runs on
 EXPOSE 5432
+
+# Mount the volume to pg data directory for persistence to acheive full performance, readmore: https://github.com/tensorchord/pgvecto.rs/blob/main/docs/installation.md
+VOLUME ["$PWD/pgdata:/var/lib/postgresql/data"]
