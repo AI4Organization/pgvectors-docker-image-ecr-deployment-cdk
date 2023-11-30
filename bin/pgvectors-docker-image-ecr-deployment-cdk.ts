@@ -15,7 +15,7 @@ const environments = process.env.ENVIROMENTS?.split(',') || ['dev']; // Parsing 
 
 for (const cdkRegion of cdkRegions) {
     for (const environment of environments) {
-        new PgvectorsDockerImageEcrDeploymentCdkStack(app, `PgvectorsDockerImageEcrDeploymentCdkStack-${environment}`, {
+        new PgvectorsDockerImageEcrDeploymentCdkStack(app, `PgvectorsDockerImageEcrDeploymentCdkStack-${cdkRegion}-${environment}`, {
             env: {
                 account,
                 region: cdkRegion,
