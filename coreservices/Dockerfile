@@ -6,10 +6,19 @@ ARG POSTGRES_USER
 ARG POSTGRES_DB
 ARG POSTGRES_PASSWORD
 
+# Print out the values of build arguments
+RUN echo "POSTGRES_USER: ${POSTGRES_USER}"
+RUN echo "POSTGRES_DB: ${POSTGRES_DB}"
+RUN echo "POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}"
+
 # Set environment variables from the arguments
 ENV POSTGRES_USER=${POSTGRES_USER} \
     POSTGRES_DB=${POSTGRES_DB} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+# Create a non-root user and switch to it
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
 
 # Copy init.sql script to the container
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
