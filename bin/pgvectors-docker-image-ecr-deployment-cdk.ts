@@ -11,7 +11,7 @@ const app = new cdk.App();
 const { CDK_DEFAULT_ACCOUNT: account, CDK_DEFAULT_REGION: region } = process.env;
 
 const cdkRegions = process.env.CDK_DEPLOY_REGIONS?.split(',') || [region]; // Parsing comma separated list of regions
-const environments = process.env.ENVIROMENTS?.split(',') || ['dev']; // Parsing comma separated list of environments
+const environments = process.env.ENVIRONMENTS?.split(',') || ['dev']; // Parsing comma separated list of environments
 
 for (const cdkRegion of cdkRegions) {
     for (const environment of environments) {
