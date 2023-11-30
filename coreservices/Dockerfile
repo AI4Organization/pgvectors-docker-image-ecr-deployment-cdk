@@ -6,7 +6,7 @@ ARG POSTGRES_USER
 ARG POSTGRES_DB
 ARG POSTGRES_PASSWORD
 
-# Print out the values of build arguments
+# Print out the values of build arguments. Consider removing the echo commands as they might expose sensitive information in the logs.
 RUN echo "POSTGRES_USER: ${POSTGRES_USER}"
 RUN echo "POSTGRES_DB: ${POSTGRES_DB}"
 RUN echo "POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}"
@@ -17,8 +17,9 @@ ENV POSTGRES_USER=${POSTGRES_USER} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
 # Create a non-root user and switch to it
-RUN adduser --disabled-password --gecos '' appuser
 RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app
+
+# Switch to the non-root user for better security
 USER appuser
 
 # Copy init.sql script to the container
@@ -34,5 +35,3 @@ RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
 # Expose the port the app runs on
 EXPOSE 5432
 
-# Mount the volume to pg data directory for persistence to acheive full performance, readmore: https://github.com/tensorchord/pgvecto.rs/blob/main/docs/installation.md
-VOLUME ["$PWD/pgdata:/var/lib/postgresql/data"]
