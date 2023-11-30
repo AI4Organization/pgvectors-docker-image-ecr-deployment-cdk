@@ -1,16 +1,26 @@
+import * as path from 'path';
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as ecrDeploy from 'cdk-ecr-deployment';
+import * as ecr from 'aws-cdk-lib/aws-ecr';
+import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+        super(scope, id, props);
 
-    // The code that defines your stack goes here
+        const repo = new ecr.Repository(this, 'PgvectorsDockerImageEcrRepository', {
+            repositoryName: 'pgvectorsrepository',
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+        });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'PgvectorsDockerImageEcrDeploymentCdkQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-  }
+        const image = new DockerImageAsset(this, 'PgvectorsDockerImageAsset', {
+            directory: path.join(__dirname, '../coreservices'),
+        });
+
+        new ecrDeploy.ECRDeployment(this, 'PgvectorsDockerImageECRDeployment', {
+            src: new ecrDeploy.DockerImageName(image.imageUri),
+            dest: new ecrDeploy.DockerImageName(`${repo.repositoryUri}:latest`),
+        });
+    }
 }
