@@ -1,4 +1,3 @@
-```markdown
 # pgvectors-docker-image-ecr-deployment-cdk
 
 This repository contains the necessary infrastructure code to build and deploy a Docker image containing the `pgvectors` PostgreSQL extension to Amazon Elastic Container Registry (ECR) using AWS Cloud Development Kit (CDK).
@@ -70,4 +69,3 @@ This project is licensed under the terms of the MIT license.
 ## Contributions
 
 Contributions to this project are welcome. Please ensure that your code adheres to the project's coding standards and includes appropriate tests.
-```
