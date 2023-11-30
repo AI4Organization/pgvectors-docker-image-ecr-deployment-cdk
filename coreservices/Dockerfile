@@ -18,6 +18,7 @@ ENV POSTGRES_USER=${POSTGRES_USER} \
 
 # Create a non-root user and switch to it
 RUN adduser --disabled-password --gecos '' appuser
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Copy init.sql script to the container
