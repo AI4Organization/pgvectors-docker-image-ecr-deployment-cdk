@@ -2,6 +2,10 @@
 
 This repository contains the necessary infrastructure code to build and deploy a Docker image containing the `pgvectors` PostgreSQL extension to Amazon Elastic Container Registry (ECR) using AWS Cloud Development Kit (CDK).
 
+## How's fast of pgvecto.rs?
+
+![Xnapper-2023-01-15-23 41 21](https://github.com/tensorchord/pgvecto.rs/blob/main/docs/images/filter-benchmark.png)
+
 ## Project Structure
 
 - `bin/`: Contains the CDK entry point script.
