@@ -5,12 +5,16 @@ import * as ecrDeploy from 'cdk-ecr-deployment';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
 
+export interface PgvectorsDockerImageEcrDeploymentCdkStackProps extends cdk.StackProps {
+    readonly repositoryName: string;
+}
+
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
         super(scope, id, props);
 
         const repo = new ecr.Repository(this, 'PgvectorsDockerImageEcrRepository', {
-            repositoryName: 'pgvectorsrepository',
+            repositoryName: props?.repositoryName || 'pgvectors-docker-image-ecr-deployment-cdk',
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
