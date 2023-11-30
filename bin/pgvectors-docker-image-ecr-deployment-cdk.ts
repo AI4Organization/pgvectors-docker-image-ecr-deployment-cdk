@@ -6,9 +6,10 @@ import { PgvectorsDockerImageEcrDeploymentCdkStack } from '../lib/pgvectors-dock
 
 const app = new cdk.App();
 new PgvectorsDockerImageEcrDeploymentCdkStack(app, 'PgvectorsDockerImageEcrDeploymentCdkStack', {
+    const { CDK_DEFAULT_ACCOUNT: account, CDK_DEFAULT_REGION: region } = process.env;
     env: {
-        account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: process.env.CDK_DEFAULT_REGION
+        account,
+        region
     },
 });
 
