@@ -4,5 +4,6 @@ declare module NodeJS {
         CDK_DEPLOY_REGIONS: string;
         ENVIRONMENTS: string;
         ECR_REPOSITORY_NAME: string;
+        APP_NAME: string;
     }
 }
