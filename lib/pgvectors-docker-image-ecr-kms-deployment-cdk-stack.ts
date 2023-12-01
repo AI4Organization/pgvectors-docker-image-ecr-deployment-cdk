@@ -17,12 +17,15 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
             enabled: true,
         });
 
-        const repo = new ecr.Repository(this, `${props.appName}-PgvectorsDockerImageEcrRepository`, {
-            repositoryName: props?.repositoryName || 'pgvectors-docker-image-ecr-deployment-cdk',
+        const ecrRepository = new ecr.Repository(this, `${props.appName}-PgvectorsDockerImageEcrRepository`, {
+            repositoryName: props?.repositoryName ?? 'pgvectors-docker-image-ecr-deployment-cdk',
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             encryption: ecr.RepositoryEncryption.KMS,
             encryptionKey: kmsKey,
         });
+
+        ecrRepository.addLifecycleRule({ maxImageCount: 4, rulePriority: 1, tagStatus: ecr.TagStatus.ANY }); // keep last 4 images
+        ecrRepository.addLifecycleRule({ maxImageAge: cdk.Duration.days(7), rulePriority: 2, tagStatus: ecr.TagStatus.ANY }); // delete images older than 7 days
 
         const image = new DockerImageAsset(this, `${props.appName}-PgvectorsDockerImageAsset`, {
             directory: path.join(__dirname, '../coreservices'),
@@ -30,7 +33,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
 
         new ecrDeploy.ECRDeployment(this, `${props.appName}-PgvectorsDockerImageECRDeployment`, {
             src: new ecrDeploy.DockerImageName(image.imageUri),
-            dest: new ecrDeploy.DockerImageName(`${repo.repositoryUri}:latest`),
+            dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${props.imageVersion}`),
         });
     }
 }
