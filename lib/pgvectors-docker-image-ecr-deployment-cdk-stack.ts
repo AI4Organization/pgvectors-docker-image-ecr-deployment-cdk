@@ -22,7 +22,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
 
         new ecrDeploy.ECRDeployment(this, `${props.appName}-PgvectorsDockerImageECRDeployment`, {
             src: new ecrDeploy.DockerImageName(image.imageUri),
-            dest: new ecrDeploy.DockerImageName(`${repo.repositoryUri}:latest`),
+            dest: new ecrDeploy.DockerImageName(`${repo.repositoryUri}:${props.imageVersion || 'latest'}`),
         });
     }
 }
