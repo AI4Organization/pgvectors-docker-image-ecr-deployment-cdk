@@ -4,25 +4,23 @@ import { Construct } from 'constructs';
 import * as ecrDeploy from 'cdk-ecr-deployment';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
-
-export interface PgvectorsDockerImageEcrDeploymentCdkStackProps extends cdk.StackProps {
-    readonly repositoryName: string;
-}
+import { PgvectorsDockerImageEcrDeploymentCdkStackProps } from './PgvectorsDockerImageEcrDeploymentCdkStackProps';
 
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
+    constructor(scope: Construct, id: string, props: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
         super(scope, id, props);
 
-        const repo = new ecr.Repository(this, 'PgvectorsDockerImageEcrRepository', {
+        const repo = new ecr.Repository(this, `${props.appName}-PgvectorsDockerImageEcrRepository`, {
             repositoryName: props?.repositoryName || 'pgvectors-docker-image-ecr-deployment-cdk',
             removalPolicy: cdk.RemovalPolicy.DESTROY,
+            encryption: ecr.RepositoryEncryption.AES_256
         });
 
-        const image = new DockerImageAsset(this, 'PgvectorsDockerImageAsset', {
+        const image = new DockerImageAsset(this, `${props.appName}-PgvectorsDockerImageAsset`, {
             directory: path.join(__dirname, '../coreservices'),
         });
 
-        new ecrDeploy.ECRDeployment(this, 'PgvectorsDockerImageECRDeployment', {
+        new ecrDeploy.ECRDeployment(this, `${props.appName}-PgvectorsDockerImageECRDeployment`, {
             src: new ecrDeploy.DockerImageName(image.imageUri),
             dest: new ecrDeploy.DockerImageName(`${repo.repositoryUri}:latest`),
         });
