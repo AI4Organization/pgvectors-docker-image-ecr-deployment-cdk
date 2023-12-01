@@ -11,7 +11,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
         super(scope, id, props);
 
         const ecrRepository = new ecr.Repository(this, `${props.appName}-PgvectorsDockerImageEcrRepository`, {
-            repositoryName: props?.repositoryName || 'pgvectors-docker-image-ecr-deployment-cdk',
+            repositoryName: props?.repositoryName ?? 'pgvectors-docker-image-ecr-deployment-cdk',
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             encryption: ecr.RepositoryEncryption.AES_256
         });
@@ -25,7 +25,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
 
         new ecrDeploy.ECRDeployment(this, `${props.appName}-PgvectorsDockerImageECRDeployment`, {
             src: new ecrDeploy.DockerImageName(image.imageUri),
-            dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${props.imageVersion || 'latest'}`),
+            dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${props.imageVersion}`),
         });
     }
 }

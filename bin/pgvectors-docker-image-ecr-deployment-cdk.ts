@@ -10,8 +10,10 @@ const app = new cdk.App();
 
 const { CDK_DEFAULT_ACCOUNT: account, CDK_DEFAULT_REGION: region } = process.env;
 
-const cdkRegions = process.env.CDK_DEPLOY_REGIONS?.split(',') || [region]; // Parsing comma separated list of regions
-const environments = process.env.ENVIRONMENTS?.split(',') || ['dev']; // Parsing comma separated list of environments
+const cdkRegions = process.env.CDK_DEPLOY_REGIONS?.split(',') ?? [region]; // Parsing comma separated list of regions
+const environments = process.env.ENVIRONMENTS?.split(',') ?? ['dev']; // Parsing comma separated list of environments
+
+const DEFAULT_IMAGE_VERSION = 'latest';
 
 for (const cdkRegion of cdkRegions) {
     for (const environment of environments) {
@@ -23,9 +25,9 @@ for (const cdkRegion of cdkRegions) {
             tags: {
                 environment,
             },
-            repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}` || 'pgvectors-docker-image-ecr-deployment-cdk',
-            appName: process.env.APP_NAME || 'pgvectors',
-            imageVersion: process.env.IMAGE_VERSION || 'latest',
+            repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}` ?? 'pgvectors-docker-image-ecr-deployment-cdk',
+            appName: process.env.APP_NAME ?? 'pgvectors',
+            imageVersion: process.env.IMAGE_VERSION ?? DEFAULT_IMAGE_VERSION,
         });
     }
 }
