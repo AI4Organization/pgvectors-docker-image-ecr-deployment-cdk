@@ -24,6 +24,7 @@ for (const cdkRegion of cdkRegions) {
                 environment,
             },
             repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}` || 'pgvectors-docker-image-ecr-deployment-cdk',
+            appName: process.env.APP_NAME || 'pgvectors',
         });
     }
 }
