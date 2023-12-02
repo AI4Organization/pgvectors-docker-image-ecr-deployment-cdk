@@ -4,4 +4,5 @@ export interface PgvectorsDockerImageEcrDeploymentCdkStackProps extends cdk.Stac
     readonly repositoryName: string;
     readonly appName: string;
     imageVersion?: string;
+    environment?: string;
 }
