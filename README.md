@@ -59,7 +59,7 @@ To use this repository, ensure you have AWS CDK installed and configured with ap
 The Dockerfile accepts the following build arguments which can be supplied as environment variables:
 
 - `POSTGRES_USER`: The PostgreSQL user.
-- `POSTGRES_DB`: The PostgreSQL database.
+- `POSTGRES_DB_NAME`: The PostgreSQL database.
 - `POSTGRES_PASSWORD`: The PostgreSQL password.
 
 ## Security Notice

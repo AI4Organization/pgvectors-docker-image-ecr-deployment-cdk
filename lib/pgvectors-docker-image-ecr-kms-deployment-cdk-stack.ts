@@ -4,7 +4,7 @@ import * as kms from 'aws-cdk-lib/aws-kms';
 import { Construct } from 'constructs';
 import * as ecrDeploy from 'cdk-ecr-deployment';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import { DockerImageAsset } from 'aws-cdk-lib/aws-ecr-assets';
+import { DockerImageAsset, Platform } from 'aws-cdk-lib/aws-ecr-assets';
 import { PgvectorsDockerImageEcrDeploymentCdkStackProps } from './PgvectorsDockerImageEcrDeploymentCdkStackProps';
 
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
@@ -29,6 +29,13 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
 
         const image = new DockerImageAsset(this, `${props.appName}-${props.environment}-DockerImageAsset`, {
             directory: path.join(__dirname, '../coreservices'),
+            platform: Platform.LINUX_ARM64,
+            buildArgs: {
+                POSTGRES_PORT: process.env.POSTGRES_PORT,
+                POSTGRES_USER: process.env.POSTGRES_USER,
+                POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+                POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME,
+            },
         });
 
         new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-DockerImageECRDeployment`, {
