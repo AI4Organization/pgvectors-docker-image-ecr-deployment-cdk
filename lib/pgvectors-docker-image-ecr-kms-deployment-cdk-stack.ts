@@ -11,7 +11,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
         super(scope, id, props);
 
-        const kmsKey = new kms.Key(this, `${props.appName}-ECRRepositoryKmsKey`, {
+        const kmsKey = new kms.Key(this, `${props.appName}-${props.environment}-ECRRepositoryKmsKey`, {
             enableKeyRotation: true,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             enabled: true,
