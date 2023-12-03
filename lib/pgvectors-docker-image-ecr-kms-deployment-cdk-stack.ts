@@ -21,6 +21,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
             repositoryName: props.repositoryName,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
             autoDeleteImages: true,
+            imageScanOnPush: true,
             encryption: ecr.RepositoryEncryption.KMS,
             encryptionKey: kmsKey,
         });
