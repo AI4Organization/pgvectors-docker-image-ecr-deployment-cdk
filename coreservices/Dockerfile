@@ -3,18 +3,15 @@ FROM tensorchord/pgvecto-rs:pg16-latest
 
 # Define arguments that can be passed at build time
 ARG POSTGRES_USER
-ARG POSTGRES_DB
+ARG POSTGRES_DB_NAME
 ARG POSTGRES_PASSWORD
+ARG POSTGRES_PORT
 
 # Set environment variables from the arguments
 ENV POSTGRES_USER=${POSTGRES_USER:-postgres} \
-    POSTGRES_DB=${POSTGRES_DB:-postgres} \
+    POSTGRES_DB=${POSTGRES_DB_NAME:-postgres} \
+    POSTGRES_PORT=${POSTGRES_PORT:-5432} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-
-# Print out the values of build arguments. Consider removing the echo commands as they might expose sensitive information in the logs.
-RUN echo "POSTGRES_USER: ${POSTGRES_USER}"
-RUN echo "POSTGRES_DB: ${POSTGRES_DB}"
-RUN echo "POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}"
 
 # Copy init.sql script to the container
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
