@@ -28,7 +28,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
         ecrRepository.addLifecycleRule({ maxImageCount: 4, rulePriority: 1 }); // keep last 4 images
         ecrRepository.addLifecycleRule({ maxImageAge: cdk.Duration.days(7), rulePriority: 2, tagStatus: ecr.TagStatus.UNTAGGED }); // delete images older than 7 days
 
-        const image = new DockerImageAsset(this, `${props.appName}-${props.environment}-DockerImageAsset`, {
+        const dockerImageAsset = new DockerImageAsset(this, `${props.appName}-${props.environment}-DockerImageAsset`, {
             directory: path.join(__dirname, '../coreservices'),
             platform: Platform.LINUX_ARM64,
             buildArgs: {
@@ -40,7 +40,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
         });
 
         new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-DockerImageECRDeployment`, {
-            src: new ecrDeploy.DockerImageName(image.imageUri),
+            src: new ecrDeploy.DockerImageName(dockerImageAsset.imageUri),
             dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${props.imageVersion}`),
         });
     }
