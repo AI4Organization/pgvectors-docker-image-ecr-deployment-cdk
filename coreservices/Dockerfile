@@ -9,7 +9,7 @@ ARG POSTGRES_PORT
 
 # Set environment variables from the arguments
 ENV POSTGRES_USER=${POSTGRES_USER:-postgres} \
-    POSTGRES_DB=${POSTGRES_DB_NAME:-postgres} \
+    POSTGRES_DB_NAME=${POSTGRES_DB_NAME:-postgres} \
     POSTGRES_PORT=${POSTGRES_PORT:-5432} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
 
