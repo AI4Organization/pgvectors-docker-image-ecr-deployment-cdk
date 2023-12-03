@@ -32,10 +32,10 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
             directory: path.join(__dirname, '../coreservices'),
             platform: Platform.LINUX_ARM64,
             buildArgs: {
-                POSTGRES_PORT: process.env.POSTGRES_PORT,
-                POSTGRES_USER: process.env.POSTGRES_USER,
-                POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-                POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME,
+                POSTGRES_PORT: props.envTyped.POSTGRES_PORT,
+                POSTGRES_USER: props.envTyped.POSTGRES_USER,
+                POSTGRES_PASSWORD: props.envTyped.POSTGRES_PASSWORD,
+                POSTGRES_DB_NAME: props.envTyped.POSTGRES_DB_NAME,
             },
         });
 

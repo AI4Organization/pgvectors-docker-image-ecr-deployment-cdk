@@ -5,7 +5,6 @@ import * as ecrDeploy from 'cdk-ecr-deployment';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { DockerImageAsset, Platform } from 'aws-cdk-lib/aws-ecr-assets';
 import { PgvectorsDockerImageEcrDeploymentCdkStackProps } from './PgvectorsDockerImageEcrDeploymentCdkStackProps';
-import { EnvTyped } from '../process-env-typed';
 
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
@@ -25,11 +24,11 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
             directory: path.join(__dirname, '../coreservices'),
             platform: Platform.LINUX_ARM64,
             buildArgs: {
-                POSTGRES_PORT: EnvTyped.POSTGRES_PORT,
-                POSTGRES_USER: EnvTyped.POSTGRES_USER,
-                POSTGRES_PASSWORD: EnvTyped.POSTGRES_PASSWORD,
-                POSTGRES_BASE_VERSION: EnvTyped.POSTGRES_BASE_VERSION,
-                POSTGRES_DB_NAME: EnvTyped.POSTGRES_DB_NAME,
+                POSTGRES_PORT: props.envTyped.POSTGRES_PORT,
+                POSTGRES_USER: props.envTyped.POSTGRES_USER,
+                POSTGRES_PASSWORD: props.envTyped.POSTGRES_PASSWORD,
+                POSTGRES_BASE_VERSION: props.envTyped.POSTGRES_BASE_VERSION,
+                POSTGRES_DB_NAME: props.envTyped.POSTGRES_DB_NAME,
             },
         });
 

@@ -15,6 +15,14 @@ const environments = process.env.ENVIRONMENTS?.split(',') ?? ['dev']; // Parsing
 
 const DEFAULT_IMAGE_VERSION = 'latest';
 
+const envTyped = {
+    POSTGRES_PORT: process.env.POSTGRES_PORT ?? '5432',
+    POSTGRES_USER: process.env.POSTGRES_USER ?? 'postgres',
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ?? 'postgres',
+    POSTGRES_BASE_VERSION: process.env.POSTGRES_BASE_VERSION ?? '16.1',
+    POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME ?? 'pgvectors',
+}
+
 for (const cdkRegion of cdkRegions) {
     for (const environment of environments) {
         new PgvectorsDockerImageEcrDeploymentCdkStack(app, `PgvectorsDockerImageEcrDeploymentCdkStack-${cdkRegion}-${environment}`, {
@@ -28,7 +36,8 @@ for (const cdkRegion of cdkRegions) {
             repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}` ?? 'pgvectors-docker-image-ecr-deployment-cdk',
             appName: process.env.APP_NAME ?? 'pgvectors',
             imageVersion: process.env.IMAGE_VERSION ?? DEFAULT_IMAGE_VERSION,
-            environment: environment
+            environment: environment,
+            envTyped: envTyped,
         });
     }
 }
