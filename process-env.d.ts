@@ -10,5 +10,6 @@ declare module NodeJS {
         POSTGRES_DB_NAME: string;
         POSTGRES_PORT: string;
         POSTGRES_PASSWORD: string;
+        POSTGRES_BASE_VERSION: string;
     }
 }
