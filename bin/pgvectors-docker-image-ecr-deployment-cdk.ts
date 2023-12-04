@@ -34,11 +34,11 @@ function checkEnvVariables(...args: string[]) {
 checkEnvVariables('ECR_REPOSITORY_NAME', 'APP_NAME', 'POSTGRES_PORT', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_BASE_VERSION', 'POSTGRES_DB_NAME');
 
 const envTyped: IEnvTyped = {
-    POSTGRES_PORT: process.env.POSTGRES_PORT,
-    POSTGRES_USER: process.env.POSTGRES_USER,
-    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-    POSTGRES_BASE_VERSION: process.env.POSTGRES_BASE_VERSION,
-    POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME,
+    POSTGRES_PORT: process.env.POSTGRES_PORT ?? '5432',
+    POSTGRES_USER: process.env.POSTGRES_USER ?? 'postgres',
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ?? 'postgres',
+    POSTGRES_BASE_VERSION: process.env.POSTGRES_BASE_VERSION ?? '16',
+    POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME ?? 'pgvectors',
 };
 
 for (const cdkRegion of cdkRegions) {
@@ -52,7 +52,7 @@ for (const cdkRegion of cdkRegions) {
                 environment,
             },
             repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}`,
-            appName: process.env.APP_NAME,
+            appName: process.env.APP_NAME ?? `pgvectors-database`,
             imageVersion: process.env.IMAGE_VERSION ?? DEFAULT_IMAGE_VERSION,
             environment: environment,
             envTyped: envTyped,
