@@ -21,7 +21,8 @@ COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
 # Make the init-db.sh script executable
 # This is necessary because the script needs execute permission to run inside the container.
 # The chmod command changes the file mode to make it executable (x) for the user (owner of the file).
-RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
+# RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh
+RUN /docker-entrypoint-initdb.d/init-db.sh
 
 # Expose the port the app runs on
 EXPOSE 5432

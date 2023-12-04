@@ -4,6 +4,7 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import * as dotenv from 'dotenv';
 import { PgvectorsDockerImageEcrDeploymentCdkStack } from '../lib/pgvectors-docker-image-ecr-deployment-cdk-stack';
+import { IEnvTyped } from '../process-env-typed';
 
 dotenv.config(); // Load environment variables from .env file
 const app = new cdk.App();
@@ -15,13 +16,30 @@ const environments = process.env.ENVIRONMENTS?.split(',') ?? ['dev']; // Parsing
 
 const DEFAULT_IMAGE_VERSION = 'latest';
 
-const envTyped = {
+/*
+ * Check if the environment variables are set
+ * @param args - Environment variables to check
+ * @throws Error if any of the environment variables is not set
+ * @returns void
+ * */
+function checkEnvVariables(...args: string[]) {
+    args.forEach((arg) => {
+        if (!process.env[arg]) {
+            throw new Error(`Environment variable ${arg} is not set yet. Please set it in .env file.`);
+        }
+    });
+}
+
+// check if the environment variables are set
+checkEnvVariables('ECR_REPOSITORY_NAME', 'APP_NAME', 'POSTGRES_PORT', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_BASE_VERSION', 'POSTGRES_DB_NAME');
+
+const envTyped: IEnvTyped = {
     POSTGRES_PORT: process.env.POSTGRES_PORT ?? '5432',
     POSTGRES_USER: process.env.POSTGRES_USER ?? 'postgres',
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ?? 'postgres',
-    POSTGRES_BASE_VERSION: process.env.POSTGRES_BASE_VERSION ?? '16.1',
+    POSTGRES_BASE_VERSION: process.env.POSTGRES_BASE_VERSION ?? '16',
     POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME ?? 'pgvectors',
-}
+};
 
 for (const cdkRegion of cdkRegions) {
     for (const environment of environments) {
@@ -33,8 +51,8 @@ for (const cdkRegion of cdkRegions) {
             tags: {
                 environment,
             },
-            repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}` ?? 'pgvectors-docker-image-ecr-deployment-cdk',
-            appName: process.env.APP_NAME ?? 'pgvectors',
+            repositoryName: `${process.env.ECR_REPOSITORY_NAME}-${environment}`,
+            appName: process.env.APP_NAME ?? `pgvectors-database`,
             imageVersion: process.env.IMAGE_VERSION ?? DEFAULT_IMAGE_VERSION,
             environment: environment,
             envTyped: envTyped,
