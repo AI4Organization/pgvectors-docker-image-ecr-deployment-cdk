@@ -27,8 +27,7 @@ RUN dos2unix /docker-entrypoint-initdb.d/init.sql
 
 # Copy init-db.sh script to the container and convert line endings
 COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
-RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh && \
-    chmod +x /docker-entrypoint-initdb.d/init-db.sh
+RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh
 
 # Make the init-db.sh script executable
 # This is necessary because the script needs execute permission to run inside the container.
