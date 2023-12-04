@@ -20,6 +20,10 @@ COPY init.sql /docker-entrypoint-initdb.d/init.sql
 
 # Copy init-db.sh script to the container
 COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+
+# Convert line endings from CRLF to LF
+RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh
+
 # Make the init-db.sh script executable
 # This is necessary because the script needs execute permission to run inside the container.
 # The chmod command changes the file mode to make it executable (x) for the user (owner of the file).
