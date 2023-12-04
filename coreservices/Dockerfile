@@ -22,8 +22,8 @@ COPY init.sql /docker-entrypoint-initdb.d/init.sql
 COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
 
 # Install dos2unix
-RUN sudo apt-get update && \
-    sudo apt-get install -y dos2unix
+RUN apt-get update && \
+    apt-get install -y dos2unix
 
 # Convert line endings from CRLF to LF
 RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh
