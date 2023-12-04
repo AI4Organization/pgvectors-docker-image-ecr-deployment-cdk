@@ -15,20 +15,20 @@ ENV POSTGRES_USER=${POSTGRES_USER:-postgres} \
     POSTGRES_BASE_VERSION=${POSTGRES_BASE_VERSION:-16.1} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
 
-# Copy init.sql script to the container
-COPY init.sql /docker-entrypoint-initdb.d/init.sql
-
-# Copy init-db.sh script to the container
-COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
-
 # Install dos2unix with no cache and clean up
 RUN apt-get update -qq && \
     apt-get install -y dos2unix && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Convert line endings from CRLF to LF
-RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh
+# Copy init.sql script to the container and convert line endings
+COPY init.sql /docker-entrypoint-initdb.d/init.sql
+RUN dos2unix /docker-entrypoint-initdb.d/init.sql
+
+# Copy init-db.sh script to the container and convert line endings
+COPY init-db.sh /docker-entrypoint-initdb.d/init-db.sh
+RUN dos2unix /docker-entrypoint-initdb.d/init-db.sh && \
+    chmod +x /docker-entrypoint-initdb.d/init-db.sh
 
 # Make the init-db.sh script executable
 # This is necessary because the script needs execute permission to run inside the container.
