@@ -36,7 +36,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
 
         const deployImageVersions = props.imageVersion === LATEST_IMAGE_VERSION ? props.imageVersion : [props.imageVersion, LATEST_IMAGE_VERSION];
         for (const deployImageVersion of deployImageVersions) {
-            new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-${deployImageVersion}-DockerImageECRDeployment`, {
+            new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-${deployImageVersion}-ECRDeployment`, {
                 src: new ecrDeploy.DockerImageName(dockerImageAsset.imageUri),
                 dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${deployImageVersion}`),
             });
