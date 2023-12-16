@@ -5,6 +5,7 @@ import * as ecrDeploy from 'cdk-ecr-deployment';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { DockerImageAsset, Platform } from 'aws-cdk-lib/aws-ecr-assets';
 import { PgvectorsDockerImageEcrDeploymentCdkStackProps } from './PgvectorsDockerImageEcrDeploymentCdkStackProps';
+import { LATEST_IMAGE_VERSION } from '../bin/pgvectors-docker-image-ecr-deployment-cdk';
 
 export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: PgvectorsDockerImageEcrDeploymentCdkStackProps) {
@@ -29,13 +30,28 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
                 POSTGRES_USER: props.envTyped.POSTGRES_USER,
                 POSTGRES_PASSWORD: props.envTyped.POSTGRES_PASSWORD,
                 POSTGRES_BASE_VERSION: props.envTyped.POSTGRES_BASE_VERSION,
-                POSTGRES_DB_NAME: props.envTyped.POSTGRES_DB_NAME,
+                POSTGRES_DB: props.envTyped.POSTGRES_DB,
             },
         });
 
-        new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-DockerImageECRDeployment`, {
-            src: new ecrDeploy.DockerImageName(dockerImageAsset.imageUri),
-            dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${props.imageVersion}`),
+        const deployImageVersions = props.imageVersion === LATEST_IMAGE_VERSION ? props.imageVersion : [props.imageVersion, LATEST_IMAGE_VERSION];
+        for (const deployImageVersion of deployImageVersions) {
+            new ecrDeploy.ECRDeployment(this, `${props.appName}-${props.environment}-${deployImageVersion}-ECRDeployment`, {
+                src: new ecrDeploy.DockerImageName(dockerImageAsset.imageUri),
+                dest: new ecrDeploy.DockerImageName(`${ecrRepository.repositoryUri}:${deployImageVersion}`),
+            });
+        }
+
+        // print out ecrRepository arn
+        new cdk.CfnOutput(this, `${props.appName}-${props.environment}-ECRRepositoryArn`, {
+            value: ecrRepository.repositoryArn,
+            exportName: `${props.appName}-${props.environment}-ECRRepositoryArn`,
+        });
+
+        // print out ecrRepository repository name
+        new cdk.CfnOutput(this, `${props.appName}-${props.environment}-ECRRepositoryName`, {
+            value: ecrRepository.repositoryName,
+            exportName: `${props.appName}-${props.environment}-ECRRepositoryName`,
         });
     }
 }

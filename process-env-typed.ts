@@ -3,5 +3,5 @@ export interface IEnvTyped {
     POSTGRES_USER: string;
     POSTGRES_PASSWORD: string;
     POSTGRES_BASE_VERSION: string;
-    POSTGRES_DB_NAME: string;
+    POSTGRES_DB: string;
 }

@@ -9,8 +9,6 @@ on:
   pull_request:
     branches:
       - dev
-      - stg
-      - main
 
 jobs:
   deploy:
@@ -96,7 +94,7 @@ jobs:
           IMAGE_VERSION: ${{ secrets.IMAGE_VERSION }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB_NAME: ${{ secrets.POSTGRES_DB_NAME }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_BASE_VERSION: ${{ secrets.POSTGRES_BASE_VERSION }}
         run: npx cdk synth
@@ -111,13 +109,14 @@ jobs:
           IMAGE_VERSION: ${{ secrets.IMAGE_VERSION }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB_NAME: ${{ secrets.POSTGRES_DB_NAME }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_BASE_VERSION: ${{ secrets.POSTGRES_BASE_VERSION }}
         run: npx cdk bootstrap
         continue-on-error: false
 
       - name: Deploy to AWS using CDK
+        if: github.event_name == 'push' || !(github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/stg' || github.ref == 'refs/heads/main')
         run: npx cdk deploy --require-approval never --all
         env:
           CDK_DEPLOY_REGIONS: ${{ secrets.CDK_DEPLOY_REGIONS }}
@@ -127,7 +126,7 @@ jobs:
           IMAGE_VERSION: ${{ secrets.IMAGE_VERSION }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB_NAME: ${{ secrets.POSTGRES_DB_NAME }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_BASE_VERSION: ${{ secrets.POSTGRES_BASE_VERSION }}
         continue-on-error: false
