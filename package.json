@@ -1,6 +1,6 @@
 {
   "name": "pgvectors-docker-image-ecr-deployment-cdk",
-  "version": "1.0.6",
+  "version": "0.1.13",
   "bin": {
     "pgvectors-docker-image-ecr-deployment-cdk": "bin/pgvectors-docker-image-ecr-deployment-cdk.js"
   },
