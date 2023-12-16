@@ -7,7 +7,7 @@ declare module NodeJS {
         APP_NAME: string;
         IMAGE_VERSION: string;
         POSTGRES_USER: string;
-        POSTGRES_DB_NAME: string;
+        POSTGRES_DB: string;
         POSTGRES_PORT: string;
         POSTGRES_PASSWORD: string;
         POSTGRES_BASE_VERSION: string;
