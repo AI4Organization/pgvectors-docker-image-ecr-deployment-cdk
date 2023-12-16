@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail # using the 'set -euo pipefail' in lieu of 'set -e' command to ensure that the script stops on the first error it encounters.
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --password "$POSTGRES_PASSWORD" --dbname "$POSTGRES_DB_NAME" <<-EOSQL
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --password "$POSTGRES_PASSWORD" --dbname "$POSTGRES_DB" <<-EOSQL
     \i /docker-entrypoint-initdb.d/init.sql
 EOSQL
 

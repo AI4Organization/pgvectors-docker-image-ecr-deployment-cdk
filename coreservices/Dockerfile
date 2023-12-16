@@ -3,14 +3,14 @@ FROM tensorchord/pgvecto-rs:pg16-latest
 
 # Define arguments that can be passed at build time
 ARG POSTGRES_USER
-ARG POSTGRES_DB_NAME
+ARG POSTGRES_DB
 ARG POSTGRES_PASSWORD
 ARG POSTGRES_PORT
 ARG POSTGRES_BASE_VERSION
 
 # Set environment variables from the arguments
 ENV POSTGRES_USER=${POSTGRES_USER:-postgres} \
-    POSTGRES_DB_NAME=${POSTGRES_DB_NAME:-postgres} \
+    POSTGRES_DB=${POSTGRES_DB:-postgres} \
     POSTGRES_PORT=${POSTGRES_PORT:-5432} \
     POSTGRES_BASE_VERSION=${POSTGRES_BASE_VERSION:-16.1} \
     POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}

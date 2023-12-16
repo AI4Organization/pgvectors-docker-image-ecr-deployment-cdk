@@ -37,7 +37,7 @@ export class PgvectorsDockerImageEcrDeploymentCdkStack extends cdk.Stack {
                 POSTGRES_PORT: props.envTyped.POSTGRES_PORT,
                 POSTGRES_USER: props.envTyped.POSTGRES_USER,
                 POSTGRES_PASSWORD: props.envTyped.POSTGRES_PASSWORD,
-                POSTGRES_DB_NAME: props.envTyped.POSTGRES_DB_NAME,
+                POSTGRES_DB: props.envTyped.POSTGRES_DB,
             },
         });
 
