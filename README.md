@@ -6,6 +6,20 @@ This repository contains the necessary infrastructure code to build and deploy a
 
 ![Xnapper-2023-01-15-23 41 21](https://github.com/tensorchord/pgvecto.rs/blob/main/docs/images/filter-benchmark.png)
 
+## Comparison with pgvector
+
+|                                             | pgvecto.rs                                             | pgvector                |
+| ------------------------------------------- | ------------------------------------------------------ | ----------------------- |
+| Transaction support                         | ✅                                                      | ⚠️                       |
+| Sufficient Result with Delete/Update/Filter | ✅                                                      | ⚠️                       |
+| Vector Dimension Limit                      | 65535                                                  | 2000                    |
+| Prefilter on HNSW                           | ✅                                                      | ❌                       |
+| Parallel HNSW Index build                   | ⚡️ Linearly faster with more cores                      | 🐌 Only single core used |
+| Async Index build                           | Ready for queries anytime and do not block insertions. | ❌                       |
+| Quantization                                | Scalar/Product Quantization                            | ❌                       |
+
+More details at [./docs/comparison-pgvector.md](./docs/comparison-pgvector.md)
+
 ## Project Structure
 
 - `bin/`: Contains the CDK entry point script.
